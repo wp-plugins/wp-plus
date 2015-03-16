@@ -5,11 +5,11 @@ Plugin URI: http://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
-Version: 1.54
+Version: 1.55
 */
 /*Exit if accessed directly:安全第一,如果是直接载入,就退出.*/
 defined('ABSPATH') or exit;
-define("plus_version", "1.54");
+define("plus_version", "1.55");
 /* 插件初始化*/
 register_activation_hook(__FILE__, 'plus_plugin_activate');
 register_deactivation_hook(__FILE__, 'plus_plugin_deactivate');
@@ -73,6 +73,18 @@ function wp_plus_menu()
 /* 插件设置核心部分*/
 function plus_pluginoptions_page()
 {
+    if ($_POST['plus_empty_cron'] == 'true') {
+        wp_clear_scheduled_hook('plus_hook_update');
+        echo '<div id="message" class="updated"><h4>操作已完成！</h4></div>';
+    }
+    if ($_POST['plus_update_info'] == 'true') {
+        plus_updateinfo();
+        echo '<div id="message" class="updated"><h4>操作已完成！</h4></div>';
+    }
+    if ($_POST['plus_post_open'] == 'true') {
+        plus_post("activate");
+        echo '<div id="message" class="updated"><h4>操作已完成！</h4></div>';
+    }
     if ($_POST['update_pluginoptions'] == 'true') {
         plus_pluginoptions_update();
         echo '<div id="message" class="updated"><h4>设置已成功保存，感谢您使用<a href="http://blog.lwl12.com/read/wp-plus.html">WP-Plus插件！</a></h4></div>';
@@ -80,10 +92,9 @@ function plus_pluginoptions_page()
 ?>
 <div class="wrap">
 <h2>WP Plus 插件控制面板</h2>
-<?php var_dump(wp_next_scheduled('plus_hook_update')) ?>
 <div id="message" class="updated"><p>WP-Plus <?php
     echo plus_version;
-?>版本更新日志：<br />[删除]Github自动更新机制<br />[删除]替换google相关资源功能<br />[新增]提交至wordpress官方插件库<br />[新增]禁止站内文章互相pingback<br />[新增]自动添加a标签nofollow与target="_blank"属性<br />[修复]插件导致RSS出错的BUG</div>
+?>版本更新日志：<br />[新增]DEBUG中心</div>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
 <b>界面美化</b><hr />
@@ -114,7 +125,32 @@ function plus_pluginoptions_page()
 ?> /> 启用“自动添加a标签nofollow与target="_blank"属性”功能<p>
 <input type="submit" class="button-primary" value="保存设置" /> &nbsp; WP-Plus 版本 <?php
     echo plus_version;
-?> &nbsp; 插件作者为 <a href="http://lwl12.com">liwanglin12</a> &nbsp; <a href="http://blog.lwl12.com/read/wp-plus.html">点击获取最新版本 & 说明
+?> &nbsp; 插件作者为 <a href="http://lwl12.com">liwanglin12</a> &nbsp; <a href="http://blog.lwl12.com/read/wp-plus.html">点击获取最新版本 & 说明</a>
+</form>
+
+<hr />
+<p>DEBUG中心</p>此处信息供出现问题时作者分析使用！请勿随意触动此处按钮！<br />
+<?php 
+echo("下次报告时间");
+var_dump(wp_next_scheduled('plus_hook_update'));
+echo("<br />");
+echo("UUID");
+var_dump(get_option('wp_plus_uuid'));
+echo("<br />");
+?>
+<form method="POST" action="">
+<input type="hidden" name="plus_empty_cron" value="true" />
+<input type="submit" class="button" value="清空计划任务设置" />
+</form>
+<form method="POST" action="">
+<input type="hidden" name="plus_update_info" value="true" />
+<input type="submit" class="button" value="发送信息刷新事件" />
+</form>
+</form>
+<form method="POST" action="">
+<input type="hidden" name="plus_post_open" value="true" />
+<input type="submit" class="button" value="发送插件启用事件" />
+</form>
 </form>
 </div>
 <?php
