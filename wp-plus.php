@@ -5,11 +5,11 @@ Plugin URI: http://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
-Version: 1.53
+Version: 1.54
 */
 /*Exit if accessed directly:安全第一,如果是直接载入,就退出.*/
 defined('ABSPATH') or exit;
-define("plus_version", "1.53");
+define("plus_version", "1.54");
 /* 插件初始化*/
 register_activation_hook(__FILE__, 'plus_plugin_activate');
 register_deactivation_hook(__FILE__, 'plus_plugin_deactivate');
@@ -28,7 +28,7 @@ function plus_plugin_activate()
 function plus_plugin_redirect()
 {
     if (!wp_next_scheduled('plus_hook_update'))
-        wp_schedule_event(current_time('timestamp'), 'hourly', 'plus_hook_update');
+      wp_schedule_event(time() + 60, 'hourly', 'plus_hook_update');
     if (get_option('do_activation_redirect', false)) {
         delete_option('do_activation_redirect');
         wp_redirect(admin_url('options-general.php?page=wp_plus'));
@@ -80,6 +80,7 @@ function plus_pluginoptions_page()
 ?>
 <div class="wrap">
 <h2>WP Plus 插件控制面板</h2>
+<?php var_dump(wp_next_scheduled('plus_hook_update')) ?>
 <div id="message" class="updated"><p>WP-Plus <?php
     echo plus_version;
 ?>版本更新日志：<br />[删除]Github自动更新机制<br />[删除]替换google相关资源功能<br />[新增]提交至wordpress官方插件库<br />[新增]禁止站内文章互相pingback<br />[新增]自动添加a标签nofollow与target="_blank"属性<br />[修复]插件导致RSS出错的BUG</div>
