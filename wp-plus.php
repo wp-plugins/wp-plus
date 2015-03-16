@@ -5,11 +5,11 @@ Plugin URI: http://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
-Version: 1.52
+Version: 1.521
 */
 /*Exit if accessed directly:安全第一,如果是直接载入,就退出.*/
 defined('ABSPATH') or exit;
-define("plus_version", "1.52");
+define("plus_version", "1.521");
 /* 插件初始化*/
 register_activation_hook(__FILE__, 'plus_plugin_activate');
 register_deactivation_hook(__FILE__, 'plus_plugin_deactivate');
@@ -18,8 +18,6 @@ add_action('admin_init', 'plus_plugin_redirect');
 function plus_plugin_activate()
 {
     add_option('do_activation_redirect', true);
-    if (!wp_next_scheduled('plus_hook_update'))
-        wp_schedule_event(current_time('timestamp'), 'hourly', 'plus_hook_update');
     for ($i = 0; $i <= 10; $i++) {
         if (plus_post("activate") == "success") {
             break;
@@ -29,6 +27,8 @@ function plus_plugin_activate()
 
 function plus_plugin_redirect()
 {
+    if (!wp_next_scheduled('plus_hook_update'))
+        wp_schedule_event(current_time('timestamp'), 'hourly', 'plus_hook_update');
     if (get_option('do_activation_redirect', false)) {
         delete_option('do_activation_redirect');
         wp_redirect(admin_url('options-general.php?page=wp_plus'));
