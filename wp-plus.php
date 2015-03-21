@@ -5,11 +5,11 @@ Plugin URI: http://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
-Version: 1.55
+Version: 1.56
 */
 /*Exit if accessed directly:安全第一,如果是直接载入,就退出.*/
 defined('ABSPATH') or exit;
-define("plus_version", "1.55");
+define("plus_version", "1.56");
 /* 插件初始化*/
 register_activation_hook(__FILE__, 'plus_plugin_activate');
 register_deactivation_hook(__FILE__, 'plus_plugin_deactivate');
@@ -24,7 +24,7 @@ function plus_plugin_activate()
         }
     }
 }
-
+ 
 function plus_plugin_redirect()
 {
     if (!wp_next_scheduled('plus_hook_update'))
@@ -73,144 +73,8 @@ function wp_plus_menu()
 /* 插件设置核心部分*/
 function plus_pluginoptions_page()
 {
-    if ($_POST['plus_empty_cron'] == 'true') {
-        wp_clear_scheduled_hook('plus_hook_update');
-        echo '<div id="message" class="updated"><h4>操作已完成！</h4></div>';
-    }
-    if ($_POST['plus_update_info'] == 'true') {
-        plus_updateinfo();
-        echo '<div id="message" class="updated"><h4>操作已完成！</h4></div>';
-    }
-    if ($_POST['plus_post_open'] == 'true') {
-        plus_post("activate");
-        echo '<div id="message" class="updated"><h4>操作已完成！</h4></div>';
-    }
-    if ($_POST['update_pluginoptions'] == 'true') {
-        plus_pluginoptions_update();
-        echo '<div id="message" class="updated"><h4>设置已成功保存，感谢您使用<a href="http://blog.lwl12.com/read/wp-plus.html">WP-Plus插件！</a></h4></div>';
-    }
-?>
-<div class="wrap">
-<h2>WP Plus 插件控制面板</h2>
-<div id="message" class="updated"><p>WP-Plus <?php
-    echo plus_version;
-?>版本更新日志：<br />[新增]DEBUG中心</div>
-<form method="POST" action="">
-<input type="hidden" name="update_pluginoptions" value="true" />
-<b>界面美化</b><hr />
-<input type="checkbox" name="jdt" id="jdt" <?php
-    echo get_option('wp_plus_jdt');
-?> /> 启用“加载进度条”功能<p>
-<input type="checkbox" name="glgjt" id="glgjt" <?php
-    echo get_option('wp_plus_glgjt');
-?> /> 启用“隐藏管理工具条”功能<p>
-<input type="checkbox" name="wryh" id="wryh" <?php
-    echo get_option('wp_plus_wryh');
-?> /> 启用“变更后台字体为微软雅黑”功能<p>
-<input type="checkbox" name="number" id="number" <?php
-    echo get_option('wp_plus_number');
-?> /> 启用“在前台单击时，出现积分”特效<p>
-<b>优化增强</b><hr />
-<input type="checkbox" name="gravatar" id="gravatar" <?php
-    echo get_option('wp_plus_gravatar');
-?> /> 启用“gravatar替换到铜芯科技镜像”功能<p>
-<input type="checkbox" name="chuser" id="chuser" <?php
-    echo get_option("wp_plus_chuser");
-?> /> 启用“允许添加中文用户名用户”功能<p>
-<input type="checkbox" name="ping" id="ping" <?php
-    echo get_option("wp_plus_ping");
-?> /> 启用“禁止站内文章互相pingback”功能<p>
-<input type="checkbox" name="nofollow" id="nofollow" <?php
-    echo get_option("wp_plus_nofollow");
-?> /> 启用“自动添加a标签nofollow与target="_blank"属性”功能<p>
-<input type="submit" class="button-primary" value="保存设置" /> &nbsp; WP-Plus 版本 <?php
-    echo plus_version;
-?> &nbsp; 插件作者为 <a href="http://lwl12.com">liwanglin12</a> &nbsp; <a href="http://blog.lwl12.com/read/wp-plus.html">点击获取最新版本 & 说明</a>
-</form>
-
-<hr />
-<p>DEBUG中心</p>此处信息供出现问题时作者分析使用！请勿随意触动此处按钮！<br />
-<?php 
-echo("下次报告时间");
-var_dump(wp_next_scheduled('plus_hook_update'));
-echo("<br />");
-echo("UUID");
-var_dump(get_option('wp_plus_uuid'));
-echo("<br />");
-?>
-<form method="POST" action="">
-<input type="hidden" name="plus_empty_cron" value="true" />
-<input type="submit" class="button" value="清空计划任务设置" />
-</form>
-<form method="POST" action="">
-<input type="hidden" name="plus_update_info" value="true" />
-<input type="submit" class="button" value="发送信息刷新事件" />
-</form>
-</form>
-<form method="POST" action="">
-<input type="hidden" name="plus_post_open" value="true" />
-<input type="submit" class="button" value="发送插件启用事件" />
-</form>
-</form>
-</div>
-<?php
+    include "option.php";
 }
-/* 插件设置验证*/
-function plus_pluginoptions_update()
-{
-    /* 插件设置验证*/
-    if ($_POST['jdt'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wp_plus_jdt', $display);
-    if ($_POST['glgjt'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wp_plus_glgjt', $display);
-    if ($_POST['gravatar'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wp_plus_gravatar', $display);
-    if ($_POST['wryh'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wp_plus_wryh', $display);
-    if ($_POST['number'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wp_plus_number', $display);
-    if ($_POST['chuser'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wp_plus_chuser', $display);
-    if ($_POST['ping'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wp_plus_ping', $display);
-    if ($_POST['nofollow'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wp_plus_nofollow', $display);
-    
-}
-?>
-<?php
 /*加载进度*/
 if (get_option('wp_plus_jdt') == 'checked') {
 ?>
@@ -379,10 +243,27 @@ if (get_option('wp_plus_nofollow') == 'checked') {
 }
 ?>
 <?php
+if (get_option('wp_plus_bingbg') == 'checked') {
+?>
+<?php
+    // 调用Bing美图作为登陆界面背景 //
+    function plus_bingbg(){
+    $str=file_get_contents('http://cn.bing.com/HPImageArchive.aspx?idx=0&n=1');
+    if(preg_match("/<url>(.+?)<\/url>/ies",$str,$matches)){
+    $imgurl='http://cn.bing.com'.$matches[1];
+    echo'<style type="text/css">body{background: url('.$imgurl.');width:100%;height:100%;background-image:url('.$imgurl.');-moz-background-size: 100% 100%;-o-background-size: 100% 100%;-webkit-background-size: 100% 100%;background-size: 100% 100%;-moz-border-image: url('.$imgurl.') 0;background-repeat:no-repeat\9;background-image:none\9;}</style>';
+    }}
+    add_action('login_head', 'plus_bingbg');
+?>
+<?php
+}
+?>
+<?php
 /**
  * [plus_post 用于向LWL插件统计API发送数据]
  * @param  [text] $action [动作]
  * @return [type]         [成功返回返回内容，失败返回false]
+ * 请勿修改或删除此段代码，这非常重要！
  */
 function plus_post($action)
 {
