@@ -1,75 +1,90 @@
 <?php
 defined('ABSPATH') or exit;
 if ($_POST['plus_empty_cron'] == 'true') {
-        echo '<div id="message" class="updated"><h4>操作已完成！';
-        var_dump(wp_clear_scheduled_hook('plus_hook_update'));
-        echo '</h4></div>';
-    }
-    if ($_POST['plus_update_info'] == 'true') {
-        echo '<div id="message" class="updated"><h4>操作已完成！';
-        var_dump(plus_updateinfo());
-        echo '</h4></div>';
-    }
-    if ($_POST['plus_post_open'] == 'true') {
-        echo '<div id="message" class="updated"><h4>操作已完成！';
-        var_dump(plus_post("activate"));
-        echo '</h4></div>';
-    }
-    if ($_POST['update_pluginoptions'] == 'true') {
-        plus_pluginoptions_update();
-        echo '<div id="message" class="updated"><h4>设置已成功保存，感谢您使用<a href="http://blog.lwl12.com/read/wp-plus.html">WP-Plus插件！</a></h4></div>';
-    }
+    echo '<div id="message" class="updated"><h4>操作已完成！';
+    var_dump(wp_clear_scheduled_hook('plus_hook_update'));
+    echo '</h4></div>';
+}
+if ($_POST['plus_update_info'] == 'true') {
+    echo '<div id="message" class="updated"><h4>操作已完成！';
+    var_dump(plus_updateinfo());
+    echo '</h4></div>';
+}
+if ($_POST['plus_post_open'] == 'true') {
+    echo '<div id="message" class="updated"><h4>操作已完成！';
+    var_dump(plus_post("activate"));
+    echo '</h4></div>';
+}
+if ($_POST['update_pluginoptions'] == 'true') {
+    plus_pluginoptions_update();
+    echo '<div id="message" class="updated"><h4>设置已成功保存，感谢您使用<a href="http://blog.lwl12.com/read/wp-plus.html">WP-Plus插件！</a></h4></div>';
+}
 ?>
 <div class="wrap">
 <h2>WP Plus 插件控制面板</h2>
 <div id="message" class="updated"><p>WP-Plus <?php
-    echo plus_version;
-?>版本更新日志：<br />[新增]使用Bing背景作为登录页背景功能（背景图每日更新）<br />[优化]独立插件设置页PHP</div>
+echo plus_version;
+?>版本更新日志：<br />
+[新增]使用Bing背景作为登录页背景功能（背景图每日更新）<br />
+[新增]禁止自动给文章段落添加p标签<br />
+[新增]使用相对链接替换绝对链接<br />
+[新增]移除部分风险/无用头部信息<br />
+[优化]独立插件设置页PHP<br />
+本次更新内容较多，如您遇到任何BUG，请立即反馈给我！</div>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
 <b>界面美化</b><hr />
 <input type="checkbox" name="jdt" id="jdt" <?php
-    echo get_option('wp_plus_jdt');
+echo get_option('wp_plus_jdt');
 ?> /> 启用“加载进度条”功能<p>
 <input type="checkbox" name="glgjt" id="glgjt" <?php
-    echo get_option('wp_plus_glgjt');
+echo get_option('wp_plus_glgjt');
 ?> /> 启用“隐藏管理工具条”功能<p>
 <input type="checkbox" name="wryh" id="wryh" <?php
-    echo get_option('wp_plus_wryh');
+echo get_option('wp_plus_wryh');
 ?> /> 启用“变更后台字体为微软雅黑”功能<p>
 <input type="checkbox" name="number" id="number" <?php
-    echo get_option('wp_plus_number');
+echo get_option('wp_plus_number');
 ?> /> 启用“在前台单击时，出现积分”特效<p>
 <input type="checkbox" name="bingbg" id="bingbg" <?php
-    echo get_option("wp_plus_bingbg");
+echo get_option("wp_plus_bingbg");
 ?> /> 启用“调用Bing背景作为登录页背景”功能<p>
 <b>优化增强</b><hr />
 <input type="checkbox" name="gravatar" id="gravatar" <?php
-    echo get_option('wp_plus_gravatar');
+echo get_option('wp_plus_gravatar');
 ?> /> 启用“gravatar替换到铜芯科技镜像”功能<p>
 <input type="checkbox" name="chuser" id="chuser" <?php
-    echo get_option("wp_plus_chuser");
+echo get_option("wp_plus_chuser");
 ?> /> 启用“允许添加中文用户名用户”功能<p>
 <input type="checkbox" name="ping" id="ping" <?php
-    echo get_option("wp_plus_ping");
+echo get_option("wp_plus_ping");
 ?> /> 启用“禁止站内文章互相pingback”功能<p>
 <input type="checkbox" name="nofollow" id="nofollow" <?php
-    echo get_option("wp_plus_nofollow");
+echo get_option("wp_plus_nofollow");
 ?> /> 启用“自动添加a标签nofollow与target="_blank"属性”功能<p>
+<input type="checkbox" name="disautop" id="disautop" <?php
+echo get_option("wp_plus_disautop");
+?> /> 启用“禁止自动给文章段落添加p标签”功能<p>
+<input type="checkbox" name="replaceurl" id="replaceurl" <?php
+echo get_option("wp_plus_replaceurl");
+?> /> 启用“使用相对链接替换绝对链接”功能<p>
+<input type="checkbox" name="simplifyhead" id="simplifyhead" <?php
+echo get_option("wp_plus_simplifyhead");
+?> /> 启用“移除部分风险/无用头部信息”功能<p>
 <input type="submit" class="button-primary" value="保存设置" /> &nbsp; WP-Plus 版本 <?php
-    echo plus_version;
+echo plus_version;
 ?> &nbsp; 插件作者为 <a href="http://lwl12.com">liwanglin12</a> &nbsp; <a href="http://blog.lwl12.com/read/wp-plus.html">点击获取最新版本 & 说明</a>
 </form>
 
 <hr />
 <p>DEBUG中心</p>此处信息供出现问题时作者分析使用！请勿随意触动此处按钮！<br />
-<?php 
-echo("下次报告时间");
+<?php
+echo ("下次报告时间");
 var_dump(wp_next_scheduled('plus_hook_update'));
-echo("<br />");
-echo("UUID");
+echo ("<br />");
+echo ("UUID");
 var_dump(get_option('wp_plus_uuid'));
-echo("<br />");
+echo ("<br />");
 ?>
 <form method="POST" action="">
 <input type="hidden" name="plus_empty_cron" value="true" />
@@ -145,6 +160,24 @@ function plus_pluginoptions_update()
         $display = '';
     }
     update_option('wp_plus_bingbg', $display);
+    if ($_POST['replaceurl'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wp_plus_replaceurl', $display);
+    if ($_POST['disautop'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wp_plus_disautop', $display);
+    if ($_POST['simplifyhead'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wp_plus_simplifyhead', $display);
     
 }
 ?>

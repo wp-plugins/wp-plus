@@ -5,11 +5,11 @@ Plugin URI: http://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
-Version: 1.56
+Version: 1.57
 */
 /*Exit if accessed directly:安全第一,如果是直接载入,就退出.*/
 defined('ABSPATH') or exit;
-define("plus_version", "1.56");
+define("plus_version", "1.57");
 /* 插件初始化*/
 register_activation_hook(__FILE__, 'plus_plugin_activate');
 register_deactivation_hook(__FILE__, 'plus_plugin_deactivate');
@@ -24,11 +24,11 @@ function plus_plugin_activate()
         }
     }
 }
- 
+
 function plus_plugin_redirect()
 {
     if (!wp_next_scheduled('plus_hook_update'))
-      wp_schedule_event(time() + 60, 'hourly', 'plus_hook_update');
+        wp_schedule_event(time() + 60, 'hourly', 'plus_hook_update');
     if (get_option('do_activation_redirect', false)) {
         delete_option('do_activation_redirect');
         wp_redirect(admin_url('options-general.php?page=wp_plus'));
@@ -247,13 +247,72 @@ if (get_option('wp_plus_bingbg') == 'checked') {
 ?>
 <?php
     // 调用Bing美图作为登陆界面背景 //
-    function plus_bingbg(){
-    $str=file_get_contents('http://cn.bing.com/HPImageArchive.aspx?idx=0&n=1');
-    if(preg_match("/<url>(.+?)<\/url>/ies",$str,$matches)){
-    $imgurl='http://cn.bing.com'.$matches[1];
-    echo'<style type="text/css">body{background: url('.$imgurl.');width:100%;height:100%;background-image:url('.$imgurl.');-moz-background-size: 100% 100%;-o-background-size: 100% 100%;-webkit-background-size: 100% 100%;background-size: 100% 100%;-moz-border-image: url('.$imgurl.') 0;background-repeat:no-repeat\9;background-image:none\9;}</style>';
-    }}
+    function plus_bingbg()
+    {
+        $str = file_get_contents('http://cn.bing.com/HPImageArchive.aspx?idx=0&n=1');
+        if (preg_match("/<url>(.+?)<\/url>/ies", $str, $matches)) {
+            $imgurl = 'http://cn.bing.com' . $matches[1];
+            echo '<style type="text/css">body{background: url(' . $imgurl . ');width:100%;height:100%;background-image:url(' . $imgurl . ');-moz-background-size: 100% 100%;-o-background-size: 100% 100%;-webkit-background-size: 100% 100%;background-size: 100% 100%;-moz-border-image: url(' . $imgurl . ') 0;background-repeat:no-repeat\9;background-image:none\9;}</style>';
+        }
+    }
     add_action('login_head', 'plus_bingbg');
+?>
+<?php
+}
+?>
+<?php
+if (get_option('wp_plus_simplifyhead') == 'checked') {
+?>
+<?php
+    remove_action('wp_head', 'rsd_link');
+    remove_action('wp_head', 'wlwmanifest_link');
+    remove_action('wp_head', 'index_rel_link');
+    remove_action('wp_head', 'parent_post_rel_link', 10, 0);
+    remove_action('wp_head', 'start_post_rel_link', 10, 0);
+    remove_action('wp_head', 'wp_generator');
+?>
+<?php
+}
+?>
+<?php
+if (get_option('wp_plus_disautop') == 'checked') {
+?>
+<?php
+    remove_filter('the_content', 'wpautop');
+    remove_filter('the_excerpt', 'wpautop');
+?>
+<?php
+}
+?>
+<?php
+if (get_option('wp_plus_replaceurl') == 'checked') {
+?>
+<?php
+    add_action('template_redirect', 'plus_relative_urls');
+    
+    function plus_relative_urls()
+    {
+        if (is_feed() || get_query_var('sitemap')) 
+            return;
+        $filters = array(
+            'post_link',
+            'post_type_link',
+            'page_link',
+            'attachment_link',
+            'get_shortlink',
+            'post_type_archive_link',
+            'get_pagenum_link',
+            'get_comments_pagenum_link',
+            'term_link',
+            'search_link',
+            'day_link',
+            'month_link',
+            'year_link'
+        );
+        foreach ($filters as $filter) {
+            add_filter($filter, 'wp_make_link_relative');
+        }
+    }
 ?>
 <?php
 }
