@@ -48,7 +48,7 @@ function plus_plugin_deactivate()
  */
 function plus_register_plugin_settings_link($links)
 {
-    $settings_link = '<a href="options-general.php?page=wp_plus">设置</*a>';
+    $settings_link = '<a href="options-general.php?page=wp_plus">设置</a>';
     array_unshift($links, $settings_link);
     return $links;
 }
