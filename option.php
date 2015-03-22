@@ -25,12 +25,9 @@ if ($_POST['update_pluginoptions'] == 'true') {
 <div id="message" class="updated"><p>WP-Plus <?php
 echo plus_version;
 ?>版本更新日志：<br />
-[新增]使用Bing背景作为登录页背景功能（背景图每日更新）<br />
-[新增]禁止自动给文章段落添加p标签<br />
-[新增]使用相对链接替换绝对链接<br />
-[新增]移除部分风险/无用头部信息<br />
-[优化]独立插件设置页PHP<br />
-本次更新内容较多，如您遇到任何BUG，请立即反馈给我！</div>
+[移除]禁止自动给文章段落添加p标签功能<br />
+[新增]访客欢迎信息显示（Beta）
+</div>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
 <b>界面美化</b><hr />
@@ -49,6 +46,9 @@ echo get_option('wp_plus_number');
 <input type="checkbox" name="bingbg" id="bingbg" <?php
 echo get_option("wp_plus_bingbg");
 ?> /> 启用“调用Bing背景作为登录页背景”功能<p>
+<input type="checkbox" name="welcomemsg" id="welcomemsg" <?php
+echo get_option("wp_plus_welcomemsg");
+?> /> 启用“访客欢迎信息显示”功能<p>
 <b>优化增强</b><hr />
 <input type="checkbox" name="gravatar" id="gravatar" <?php
 echo get_option('wp_plus_gravatar');
@@ -62,9 +62,6 @@ echo get_option("wp_plus_ping");
 <input type="checkbox" name="nofollow" id="nofollow" <?php
 echo get_option("wp_plus_nofollow");
 ?> /> 启用“自动添加a标签nofollow与target="_blank"属性”功能<p>
-<input type="checkbox" name="disautop" id="disautop" <?php
-echo get_option("wp_plus_disautop");
-?> /> 启用“禁止自动给文章段落添加p标签”功能<p>
 <input type="checkbox" name="replaceurl" id="replaceurl" <?php
 echo get_option("wp_plus_replaceurl");
 ?> /> 启用“使用相对链接替换绝对链接”功能<p>
@@ -166,18 +163,18 @@ function plus_pluginoptions_update()
         $display = '';
     }
     update_option('wp_plus_replaceurl', $display);
-    if ($_POST['disautop'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wp_plus_disautop', $display);
     if ($_POST['simplifyhead'] == 'on') {
         $display = 'checked';
     } else {
         $display = '';
     }
     update_option('wp_plus_simplifyhead', $display);
+    if ($_POST['welcomemsg'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wp_plus_welcomemsg', $display);
     
 }
 ?>
