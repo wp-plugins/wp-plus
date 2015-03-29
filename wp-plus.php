@@ -5,11 +5,11 @@ Plugin URI: http://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
-Version: 1.58
+Version: 1.59
 */
 /*Exit if accessed directly:安全第一,如果是直接载入,就退出.*/
 defined('ABSPATH') or exit;
-define("plus_version", "1.58");
+define("plus_version", "1.59");
 /* 插件初始化*/
 register_activation_hook(__FILE__, 'plus_plugin_activate');
 register_deactivation_hook(__FILE__, 'plus_plugin_deactivate');
@@ -326,6 +326,18 @@ if (get_option('wp_plus_welcomemsg') == 'checked') {
     }
     add_action('wp_head', 'plus_welcomemsg_css');
     add_action('wp_footer', 'plus_welcomemsg');
+?>
+<?php
+}
+?>
+<?php
+if (get_option('wp_plus_ietip') == 'checked') {
+?>
+<?php
+    function plus_ietip(){
+        echo '<!--[if lt IE 10]><script src="http://wuyongzhiyong.b0.upaiyun.com/iedie/v1.1/script.min.js"></script><![endif]-->';
+    }
+    add_action('wp_head', 'plus_ietip');
 ?>
 <?php
 }
