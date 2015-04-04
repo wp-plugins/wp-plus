@@ -25,7 +25,8 @@ if ($_POST['update_pluginoptions'] == 'true') {
 <div id="message" class="updated"><p>WP-Plus <?php
 echo plus_version;
 ?>版本更新日志：<br />
-[新增]低版本IE更新提示功能
+[新增]启用WP原生链接管理器功能<br />
+[恢复]Google API替换功能
 </div>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
@@ -70,6 +71,12 @@ echo get_option("wp_plus_simplifyhead");
 <input type="checkbox" name="ietip" id="ietip" <?php
 echo get_option("wp_plus_ietip");
 ?> /> 启用“提示IE10以下IE用户更换浏览器”功能<p>
+<input type="checkbox" name="linkman" id="linkman" <?php
+echo get_option("wp_plus_linkman");
+?> /> 启用“WP原生链接管理器”功能<p>
+<input type="checkbox" name="google" id="google" <?php
+echo get_option("wp_plus_google");
+?> /> 启用“替换Google API”功能<p>
 <input type="submit" class="button-primary" value="保存设置" /> &nbsp; WP-Plus 版本 <?php
 echo plus_version;
 ?> &nbsp; 插件作者为 <a href="http://lwl12.com">liwanglin12</a> &nbsp; <a href="http://blog.lwl12.com/read/wp-plus.html">点击获取最新版本 & 说明</a>
@@ -183,6 +190,17 @@ function plus_pluginoptions_update()
         $display = '';
     }
     update_option('wp_plus_ietip', $display);
-    
+    if ($_POST['linkman'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wp_plus_linkman', $display);
+    if ($_POST['google'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wp_plus_google', $display);
 }
 ?>

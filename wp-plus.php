@@ -5,11 +5,11 @@ Plugin URI: http://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
-Version: 1.59
+Version: 1.60
 */
 /*Exit if accessed directly:安全第一,如果是直接载入,就退出.*/
 defined('ABSPATH') or exit;
-define("plus_version", "1.59");
+define("plus_version", "1.60");
 /* 插件初始化*/
 register_activation_hook(__FILE__, 'plus_plugin_activate');
 register_deactivation_hook(__FILE__, 'plus_plugin_deactivate');
@@ -312,17 +312,19 @@ if (get_option('wp_plus_welcomemsg') == 'checked') {
 ?>
 <?php
     require "welcomemsg.php";
-    function plus_welcomemsg_css(){
+    function plus_welcomemsg_css()
+    {
         echo '<style type="text/css">#hellobaby { width: 200px; background:#000000; border:1px solid #B3B3B3; color:#FFFFFF; font-size:14px; opacity:0.7; filter:alpha(opacity=70); padding: 10px 10px 10px 10px; position:fixed; right:0; top:150px; z-index:999; } .closebox{float:left;text-align:center;font-size:26px;margin-top:0px;padding: 0 10px 0 0;} .closebox a{border-bottom: none;}</style>';
     }
-    function plus_welcomemsg(){
+    function plus_welcomemsg()
+    {
         $msg = welcome_msg();
         if ($msg !== false) {
-        echo "<script type=\"text/javascript\"> (function(){ var wait = 30; var interval = setInterval(function(){ var time = --wait; if(time <= 0) { $('#hellobaby').animate({right:'-20000px'}).hide(); clearInterval(interval); }; }, 1000); })(); </script>";
-        echo '<div id="hellobaby"> <div class="closebox"><a href="javascript:void(0)" onclick="$(\'#hellobaby\').animate({right:\'-20000px\'});" title="关闭">x</a></div>';
-        echo $msg;
-        echo '</div>';
-        }        
+            echo "<script type=\"text/javascript\"> (function(){ var wait = 30; var interval = setInterval(function(){ var time = --wait; if(time <= 0) { $('#hellobaby').animate({right:'-20000px'}).hide(); clearInterval(interval); }; }, 1000); })(); </script>";
+            echo '<div id="hellobaby"> <div class="closebox"><a href="javascript:void(0)" onclick="$(\'#hellobaby\').animate({right:\'-20000px\'});" title="关闭">x</a></div>';
+            echo $msg;
+            echo '</div>';
+        }
     }
     add_action('wp_head', 'plus_welcomemsg_css');
     add_action('wp_footer', 'plus_welcomemsg');
@@ -334,12 +336,30 @@ if (get_option('wp_plus_welcomemsg') == 'checked') {
 if (get_option('wp_plus_ietip') == 'checked') {
 ?>
 <?php
-    function plus_ietip(){
+    function plus_ietip()
+    {
         echo '<!--[if lt IE 10]><script src="http://wuyongzhiyong.b0.upaiyun.com/iedie/v1.1/script.min.js"></script><![endif]-->';
     }
     add_action('wp_head', 'plus_ietip');
 ?>
 <?php
+}
+?>
+<?php
+if (get_option('wp_plus_linkman') == 'checked') {
+    add_filter('pre_option_link_manager_enabled', '__return_true');
+}
+/*谷歌替换*/
+if (get_option('wp_plus_google') == 'checked') {
+    add_filter('style_loader_tag', array(
+        $this,
+        'ohMyFont'
+    ), 888, 4);
+    function ohMyFont($text)
+    {
+        returnstr_replace('//fonts.googleapis.com/', '//fonts.geekzu.org/', $text);
+        returnstr_replace('//ajax.googleapis.com', '//sdn.geekzu.org/ajax', $text);
+    }
 }
 ?>
 <?php
