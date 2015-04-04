@@ -5,11 +5,11 @@ Plugin URI: http://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
-Version: 1.60
+Version: 1.61
 */
 /*Exit if accessed directly:安全第一,如果是直接载入,就退出.*/
 defined('ABSPATH') or exit;
-define("plus_version", "1.60");
+define("plus_version", "1.61");
 /* 插件初始化*/
 register_activation_hook(__FILE__, 'plus_plugin_activate');
 register_deactivation_hook(__FILE__, 'plus_plugin_deactivate');
@@ -365,8 +365,8 @@ if (get_option('wp_plus_google') == 'checked') {
     ), 888, 4);
     function ohMyFont($text)
     {
-        returnstr_replace('//fonts.googleapis.com/', '//fonts.geekzu.org/', $text);
-        returnstr_replace('//ajax.googleapis.com', '//sdn.geekzu.org/ajax', $text);
+        $text = str_replace('//fonts.googleapis.com/', '//fonts.geekzu.org/', $text);
+        return str_replace('//ajax.googleapis.com', '//sdn.geekzu.org/ajax', $text);
     }
 ?>
 <?php
