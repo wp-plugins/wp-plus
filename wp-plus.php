@@ -355,19 +355,26 @@ if (get_option('wp_plus_linkman') == 'checked') {
 }
 ?>
 <?php
-/*谷歌替换*/
+/*Google公共库加速*/
 if (get_option('wp_plus_google') == 'checked') {
 ?>
 <?php
-    add_filter('style_loader_tag', array(
-        $this,
-        'ohMyFont'
-    ), 888, 4);
-    function ohMyFont($text)
+    function wp_plus_google($buffer)
     {
-        $text = str_replace('//fonts.googleapis.com/', '//fonts.geekzu.org/', $text);
-        return str_replace('//ajax.googleapis.com', '//sdn.geekzu.org/ajax', $text);
+        $buffer = str_replace("fonts.googleapis.com", "fonts.geekzu.org", $buffer);
+        $buffer = str_replace("ajax.googleapis.com", "sdn.geekzu.org/ajax", $buffer);
+        return $buffer;
     }
+    function wp_plus_google_start()
+    {
+        ob_start("wp_plus_google");
+    }
+    function wp_plus_google_end()
+    {
+        ob_end_flush();
+    }
+    add_action('init', 'wp_plus_google_start');
+    add_action('shutdown', 'wp_plus_google_end');
 ?>
 <?php
 }
