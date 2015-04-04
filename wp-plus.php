@@ -347,10 +347,18 @@ if (get_option('wp_plus_ietip') == 'checked') {
 ?>
 <?php
 if (get_option('wp_plus_linkman') == 'checked') {
+?>
+<?php
     add_filter('pre_option_link_manager_enabled', '__return_true');
+?>
+<?php
 }
+?>
+<?php
 /*谷歌替换*/
 if (get_option('wp_plus_google') == 'checked') {
+?>
+<?php
     add_filter('style_loader_tag', array(
         $this,
         'ohMyFont'
@@ -360,6 +368,8 @@ if (get_option('wp_plus_google') == 'checked') {
         returnstr_replace('//fonts.googleapis.com/', '//fonts.geekzu.org/', $text);
         returnstr_replace('//ajax.googleapis.com', '//sdn.geekzu.org/ajax', $text);
     }
+?>
+<?php
 }
 ?>
 <?php
