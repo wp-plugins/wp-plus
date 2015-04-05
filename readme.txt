@@ -28,6 +28,8 @@ WP-Plus 是一款免费插件，但我仍会更专注于其稳定性与专业性
 1. WP-Plus
 
 == Changelog ==
+= 1.62 =
+[修复]Gravatar替换BUG
 = 1.60 =
 [新增]启用WP原生链接管理器功能
 [恢复]Google API替换功能
@@ -62,6 +64,9 @@ WP-Plus 是一款免费插件，但我仍会更专注于其稳定性与专业性
 提交到WordPress插件库的第一个版本，包含基础功能，并优化了代码
 
 == Upgrade Notice ==
+= 1.62 =
+[修复]Gravatar替换BUG
+= 1.60 =
 [新增]启用WP原生链接管理器功能
 [恢复]Google API替换功能
 = 1.59 =

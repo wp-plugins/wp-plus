@@ -25,8 +25,7 @@ if ($_POST['update_pluginoptions'] == 'true') {
 <div id="message" class="updated"><p>WP-Plus <?php
 echo plus_version;
 ?>版本更新日志：<br />
-[新增]启用WP原生链接管理器功能<br />
-[恢复]Google API替换功能
+[修复]Gravatar替换BUG
 </div>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
@@ -52,7 +51,7 @@ echo get_option("wp_plus_welcomemsg");
 <b>优化增强</b><hr />
 <input type="checkbox" name="gravatar" id="gravatar" <?php
 echo get_option('wp_plus_gravatar');
-?> /> 启用“gravatar替换到铜芯科技镜像”功能<p>
+?> /> 启用“Gravatar替换到Geekzu镜像”功能<p>
 <input type="checkbox" name="chuser" id="chuser" <?php
 echo get_option("wp_plus_chuser");
 ?> /> 启用“允许添加中文用户名用户”功能<p>
