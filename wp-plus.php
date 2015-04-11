@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP-Plus
-Plugin URI: http://blog.lwl12.com/read/wp-plus.html
+Plugin URI: https://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
@@ -251,7 +251,7 @@ if (get_option('wp_plus_bingbg') == 'checked') {
     {
         $str = file_get_contents('http://cn.bing.com/HPImageArchive.aspx?idx=0&n=1');
         if (preg_match("/<url>(.+?)<\/url>/ies", $str, $matches)) {
-            $imgurl = 'http://cn.bing.com' . $matches[1];
+            $imgurl = '//cn.bing.com' . $matches[1];
             echo '<style type="text/css">body{background: url(' . $imgurl . ');width:100%;height:100%;background-image:url(' . $imgurl . ');-moz-background-size: 100% 100%;-o-background-size: 100% 100%;-webkit-background-size: 100% 100%;background-size: 100% 100%;-moz-border-image: url(' . $imgurl . ') 0;background-repeat:no-repeat\9;background-image:none\9;}</style>';
         }
     }
@@ -338,7 +338,7 @@ if (get_option('wp_plus_ietip') == 'checked') {
 <?php
     function plus_ietip()
     {
-        echo '<!--[if lt IE 10]><script src="http://wuyongzhiyong.b0.upaiyun.com/iedie/v1.1/script.min.js"></script><![endif]-->';
+        echo '<!--[if lt IE 10]><script src="//wuyongzhiyong.b0.upaiyun.com/iedie/v1.1/script.min.js"></script><![endif]-->';
     }
     add_action('wp_head', 'plus_ietip');
 ?>
