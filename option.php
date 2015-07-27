@@ -48,6 +48,9 @@ echo get_option("wp_plus_bingbg");
 <input type="checkbox" name="welcomemsg" id="welcomemsg" <?php
 echo get_option("wp_plus_welcomemsg");
 ?> /> 启用“访客欢迎信息显示”功能<p>
+<input type="checkbox" name="codehl" id="codehl" <?php
+echo get_option("wp_plus_codehl");
+?> /> 启用“代码高亮”功能<p>
 <b>优化增强</b><hr />
 <input type="checkbox" name="gravatar" id="gravatar" <?php
 echo get_option('wp_plus_gravatar');
@@ -201,5 +204,11 @@ function plus_pluginoptions_update()
         $display = '';
     }
     update_option('wp_plus_google', $display);
+    if ($_POST['codehl'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wp_plus_codehl', $display);
 }
 ?>

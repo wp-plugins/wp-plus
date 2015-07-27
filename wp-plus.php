@@ -5,12 +5,13 @@ Plugin URI: https://blog.lwl12.com/read/wp-plus.html
 Description: 优化和增强您的博客
 Author: liwanglin12
 Author URI: http://lwl12.com
-Version: 1.64
+Version: 1.65
 */
 /*Exit if accessed directly:安全第一,如果是直接载入,就退出.*/
 defined('ABSPATH') or exit;
-define("plus_version", "1.64");
+define("plus_version", "1.65");
 /* 插件初始化*/
+define('WP_PLUS_URL', plugin_dir_url(__FILE__));
 register_activation_hook(__FILE__, 'plus_plugin_activate');
 register_deactivation_hook(__FILE__, 'plus_plugin_deactivate');
 add_action('plus_hook_update', 'plus_updateinfo');
@@ -79,17 +80,15 @@ function plus_pluginoptions_page()
 if (get_option('wp_plus_jdt') == 'checked') {
 ?>
 <?php
-    if (!defined('ABSPATH'))
-        exit;
-    define('WP_NPROGRESS_PLUGIN_URL', plugin_dir_url(__FILE__));
+
     function plus_wpn_enqueue()
     {
-        wp_enqueue_style('nprogresss', WP_NPROGRESS_PLUGIN_URL . 'jdt/nprogress.css');
+        wp_enqueue_style('nprogresss', WP_PLUS_URL . 'jdt/nprogress.css');
         
-        wp_enqueue_script('nprogress', WP_NPROGRESS_PLUGIN_URL . 'jdt/nprogress.js', array(
+        wp_enqueue_script('nprogress', WP_PLUS_URL . 'jdt/nprogress.js', array(
             'jquery'
         ), '0.1.2', true);
-        wp_enqueue_script('wp-nprogress', WP_NPROGRESS_PLUGIN_URL . 'jdt/global.js', array(
+        wp_enqueue_script('wp-nprogress', WP_PLUS_URL . 'jdt/global.js', array(
             'jquery',
             'nprogress'
         ), '0.0.1', true);
@@ -375,6 +374,28 @@ if (get_option('wp_plus_google') == 'checked') {
     }
     add_action('init', 'wp_plus_google_start');
     add_action('shutdown', 'wp_plus_google_end');
+?>
+<?php
+}
+?>
+<?php
+/*代码高亮*/
+if (get_option('wp_plus_codehl') == 'checked') {
+?>
+<?php
+    function plus_add_prismjs()
+    {
+        wp_register_script('prismJS', WP_PLUS_URL . 'plus_prism.js');
+        wp_enqueue_script('prismJS');
+    }
+    function plus_add_prismcss()
+    {
+        wp_register_style('prismCSS', WP_PLUS_URL . 'plus_prism.css');
+        wp_enqueue_style('prismCSS');
+    }
+    add_action('wp_enqueue_scripts', 'plus_add_prismjs');
+    add_action('wp_head', 'plus_add_prismcss');
+    
 ?>
 <?php
 }
